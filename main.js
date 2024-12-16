@@ -5,6 +5,44 @@ const FULL_HEART = '♥'
 // Your JavaScript code goes here!
 
 
+function mimicServerCall(url = "http://mimicServer.example.com", config = {}) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+  
+      Math.random() < 0.8 ? resolve("Success!") : reject("Random server error. Try again.");
+    }, 300);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("modal");
+  const modalMessage = document.getElementById("modal-message");
+
+  const likeGlyphs = document.querySelectorAll(".like-glyph");
+  likeGlyphs.forEach(heart => {
+    heart.addEventListener("click", () => {
+      if (heart.textContent === "♡") {
+        mimicServerCall()
+          .then(() => {
+            heart.textContent = "♥"; 
+            heart.classList.add("activated-heart");
+          })
+          .catch(error => {
+            modalMessage.textContent = error;
+            modal.classList.remove("hidden");
+
+            setTimeout(() => {
+              modal.classList.add("hidden");
+            }, 3000);
+          });
+      } else {
+        heart.textContent = "♡"; 
+        heart.classList.remove("activated-heart"); 
+      }
+    });
+  });
+});
+
 
 
 //------------------------------------------------------------------------------
